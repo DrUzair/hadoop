@@ -1,5 +1,5 @@
 ```shell
-!wget https://raw.githubusercontent.com/DrUzair/MLSD/master/Datasets/galton.csv
+wget https://raw.githubusercontent.com/DrUzair/MLSD/master/Datasets/galton.csv
 ```
 ```py
 from pyspark.ml.feature import VectorAssembler
@@ -11,7 +11,6 @@ spark = SparkSession.builder \
     .appName("Spark_Clustering_Lab") \
     .getOrCreate()
 
-!wget https://raw.githubusercontent.com/DrUzair/MLSD/master/Datasets/galton.csv
 df_galton = spark.read.csv('galton.csv',inferSchema=True, header=True)
 
 inputcols = ['parent', 'child']
