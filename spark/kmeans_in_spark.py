@@ -1,3 +1,6 @@
+```shell
+!wget https://raw.githubusercontent.com/DrUzair/MLSD/master/Datasets/galton.csv
+```
 ```py
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.clustering import KMeans
