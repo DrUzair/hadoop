@@ -1,7 +1,3 @@
-```shell
-wget https://raw.githubusercontent.com/DrUzair/MLSD/master/Datasets/galton.csv
-```
-```py
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.clustering import KMeans
 from pyspark.sql import SparkSession
@@ -11,6 +7,7 @@ spark = SparkSession.builder \
     .appName("Spark_Clustering_Lab") \
     .getOrCreate()
 
+# !wget https://raw.githubusercontent.com/DrUzair/MLSD/master/Datasets/galton.csv
 df_galton = spark.read.csv('galton.csv',inferSchema=True, header=True)
 
 inputcols = ['parent', 'child']
@@ -28,4 +25,3 @@ sns.lmplot( x="parent", y="child", data=transformed.toPandas(), fit_reg=False, h
 
 transformed.toPandas().to_csv('galton_clusters1.csv')
 transformed.write.csv('galton_clusters2.csv')
-```
