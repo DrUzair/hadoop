@@ -1,0 +1,53 @@
+-- comment
+-- semicolon marks end of hive statement. 
+-- putting semicolon in comment makes hive compiler think that its a command not comment. so smart ?
+-- SQL Editor will put a semi-colon at the end of non comment line (over smart ?)
+-- create table temp_drivers (col_value STRING) 
+-- LOAD DATA INPATH '/user/maria_dev/drivers.csv' OVERWRITE INTO TABLE temp_drivers 
+
+--CREATE TABLE drivers 
+--	(driverId INT, 
+--	 name STRING, 
+--	 ssn BIGINT, 
+--	 location STRING, 
+--	 certified STRING, 
+--	 wageplan STRING)
+-- Running CREATE TABLE drivers ... again fails [Table Already exists]
+
+-- insert overwrite table drivers
+--SELECT
+--  regexp_extract(col_value, '^(?:([^,]*),?){1}', 1) driverId,
+--  regexp_extract(col_value, '^(?:([^,]*),?){2}', 1) name,
+--  regexp_extract(col_value, '^(?:([^,]*),?){3}', 1) ssn,
+--  regexp_extract(col_value, '^(?:([^,]*),?){4}', 1) location,
+--  regexp_extract(col_value, '^(?:([^,]*),?){5}', 1) certified,
+--  regexp_extract(col_value, '^(?:([^,]*),?){6}', 1) wageplan
+-- from temp_drivers
+
+
+-- SELECT * FROM drivers LIMIT 10
+
+-- CREATE TABLE temp_timesheet (col_value string)
+-- LOAD DATA INPATH '/user/maria_dev/timesheet.csv' OVERWRITE INTO TABLE temp_timesheet
+
+
+-- CREATE TABLE timesheet (driverId INT, week INT, hours_logged INT , miles_logged INT)
+
+
+--insert overwrite table timesheet
+--SELECT
+--  regexp_extract(col_value, '^(?:([^,]*),?){1}', 1) driverId,
+--  regexp_extract(col_value, '^(?:([^,]*),?){2}', 1) week,
+--  regexp_extract(col_value, '^(?:([^,]*),?){3}', 1) hours_logged,
+--  regexp_extract(col_value, '^(?:([^,]*),?){4}', 1) miles_logged
+-- from temp_timesheet
+
+-- 
+
+-- SELECT * FROM timesheet LIMIT 10
+
+-- SELECT driverId, sum(hours_logged) AS HRS_LOGGED, sum(miles_logged) AS MILES_LOGGED FROM timesheet GROUP BY driverId;
+-- capital letters become small-letters (over-simple);
+SELECT d.driverId, d.name, t.total_hours, t.total_miles from drivers d
+JOIN (SELECT driverId, sum(hours_logged)total_hours, sum(miles_logged)total_miles FROM timesheet GROUP BY driverId ) t
+ON (d.driverId = t.driverId);
