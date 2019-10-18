@@ -1,13 +1,7 @@
 # All about Apache Spark 
 
-## Version
-```
-spark-submit --version
-```
-
-## 
-Cluster Management
-	- Ambari
+## Cluster Management
+- Ambari
 
 
 Zeppelin: Development Notebook (SPARK applications)
@@ -35,69 +29,71 @@ Launch Zeppelin Notbook
 Spark: a fast, in-memory data processing engine with elegant and expressive development APIs in Scala, Java, Python, and R that allow developers to execute a variety of data intensive workloads.
 	- Spark itself written in Scala
 
-Use Cases:
-	- batch processing, 
-	- real-time streaming, 
-	- advanced modeling and analytics
+## Use Cases:
+- batch processing, 
+- real-time streaming, 
+- advanced modeling and analytics
 
-Userbase
-	- NASA
-	- Ebay
-	- Amazon
-	- Groupon
-	- TripAdvisor
-	- Yahoo
+## Userbase
+- NASA
+- Ebay
+- Amazon
+- Groupon
+- TripAdvisor
+- Yahoo
 	
-Spark Datasets & DataFrames
-	- strongly typed distributed collections of data created from a variety of sources: 
-		- JSON and XML files, tables in Hive, external databases and more. 
-	- Conceptually, they are equivalent to a table in a relational database or a DataFrame in R or Python.
-	- Datasets are strongly typed (contrary to DataFrames)
+## Spark Datasets & DataFrames
+- strongly typed distributed collections of data created from a variety of sources: 
+- JSON and XML files, tables in Hive, external databases and more. 
+- Conceptually, they are equivalent to a table in a relational database or a DataFrame in R or Python.
+- Datasets are strongly typed (contrary to DataFrames)
 
-RDD
-	- Atomic
-	- Resilient	: to node failures
-	- Distributed : Across cluster
-	- Datasets : think of table
+## RDD
+- Atomic
+- Resilient	: to node failures
+- Distributed : Across cluster
+- Datasets : think of table
 	
 
-Spark Components
-	- Core
-		- Streaming: Realtime ingestion & Analysis
-		- Spark SQL: SQL Interface to Spark
-		- MLLib: Iterative: Clustering, Classification, Regression
-		- GraphX: Social Networks, 
+## Spark Components
+- Core
+- Streaming: Realtime ingestion & Analysis
+- Spark SQL: SQL Interface to Spark
+- MLLib: Iterative: Clustering, Classification, Regression
+- GraphX: Social Networks, 
 
-Spark Context
-		- Spark shell creates an "sc"
-		- nums = parallelize([1,2,3,4])
-		- sc.textFile("file:///c:/path/to/a/huge/file.txt") or hdfs or s3n
-		- hiveContext = HiveContext(sc) 
-		- rows = hiveContext.sql("SELECT name, age FROM Employee")
-		- Spark Context can also be initialized using
-			- JDBC
-			- Cassandra
-			- HBase
-			- Json, CSV, XML, etc
+## Spark Context
+- Spark shell creates an "sc"
+- nums = parallelize([1,2,3,4])
+- sc.textFile("file:///c:/path/to/a/huge/file.txt") or hdfs or s3n
+- hiveContext = HiveContext(sc) 
+- rows = hiveContext.sql("SELECT name, age FROM Employee")
+- Spark Context can also be initialized using
+	- JDBC
+	- Cassandra
+	- HBase
+	- Json, CSV, XML, etc
 
-RDD Transformations
-	- map: rdd = sc.parallelize([1,2,3,4]); sqrRDD = rdd.map(lambda x: x*x)
-	- flatmap: 
-	- filter
-	- distinct
-	- sample
-	- union, intersection, subtract, cartesian
+## RDD Transformations
+- map: rdd = sc.parallelize([1,2,3,4]); sqrRDD = rdd.map(lambda x: x*x)
+- flatmap: 
+- filter
+- distinct
+- sample
+- union, intersection, subtract, cartesian
 
-Spark & HDP
+## Spark & HDP
 	The following features and associated tools are not officially supported by Hortonworks:
-	- Spark Standalone
-	- Spark on Mesos
-	- Jupyter Notebook (formerly IPython)
-	
-Ambari for Spark
-	- 
+- Spark Standalone
+- Spark on Mesos
+- Jupyter Notebook (formerly IPython)
+
 	
 Spark-submit
 
-Spark Distribution
-	- https://www-us.apache.org/dist/spark/
+[Spark Distribution](https://www-us.apache.org/dist/spark/)
+
+## Spark-submit
+```
+spark-submit --version
+```
