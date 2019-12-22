@@ -1,27 +1,34 @@
-------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------
--- Programming Hive 2 - Lab Exercises
+# Programming Hive 2 - Lab Exercises
 
--- 1. In this lab session, we will practice
---   - Hive
---     - Complex data type
---     - collection functions
---     - advanced string functions
---     - UDAF
---     - UDTF
---   - Sqoop
---     - moving data between relational database (mysql) and hive
+Topics
+- Hive
+- Complex data type
+- collection functions
+- advanced string functions
+- UDAF
+- UDTF
+- Sqoop
+- moving data between relational database (mysql) and hive
 
--- 2. In case you don't have the geo-tagged tweet data in hadoop, you need reload it 
--- 3. To avoid confusion, please always include database name 'twitter.' as part of your hive table name. If you 
---    don't specify the database name while you're not in the twitter database (use twitter), you will not find the
---    the corresponding table. By default you're in a database called "default" 
---    e.g.,  twitter.full_text
-------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------
+## Dataset
+```shell
+hadoop fs -put /path/to/twitter_data/full_text.txt /path/to/hdfs/dir
+```
+To avoid confusion, please always include database name 'twitter.' as part of your hive table name. If you 
+don't specify the database name while you're not in the twitter database (use twitter), you will not find the
+the corresponding table. By default you're in a database called "default" 
+e.g.,  twitter.full_text
 
-
-
+```shell
+hive> show databases;
+OK
+default
+demo
+foodmart
+twitter
+xademo
+Time taken: 0.046 seconds, Fetched: 5 row(s)
+```
 --------------------------------------------------------------------
 -- load geo-tagged tweets as external hive table
 
