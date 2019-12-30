@@ -1,5 +1,4 @@
-# Apache Hive 2 
-
+# Apache Hive 
 Topics
 - Hive
 - Complex data type
@@ -10,6 +9,14 @@ Topics
 - Sqoop
 - moving data between relational database (mysql) and hive
 ## Hive CLI
+### Invoke
+```shell
+hive
+```
+### Quite
+```shell
+quite;
+```
 ### Current Database in Use
 ```shell
 set hive.cli.print.current.db=true;
