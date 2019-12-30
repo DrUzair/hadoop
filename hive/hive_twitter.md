@@ -61,6 +61,33 @@ full_text_2
 weekend_tweets
 Time taken: 0.509 seconds, Fetched: 4 row(s)
 ```
+### Location of hive Tables
+'dfs -ls' command in hive CLI lists contents of HDFS directory. For twitter database, a directory "twitter.db" should be listed because **hive databases** are just **HDFS directories** and each **hive table** is an **HDFS file**
+```shell
+hive (default)> dfs -ls /apps/hive/warehouse;
+Found 11 items
+drwxrwxrwx   - root hdfs          0 2019-12-19 14:01 /apps/hive/warehouse/demo.db
+drwxrwxrwx   - hive hdfs          0 2019-10-16 01:50 /apps/hive/warehouse/drivers
+drwxrwxrwx   - hive hdfs          0 2019-10-16 02:26 /apps/hive/warehouse/drivers2
+drwxrwxrwx   - hive hdfs          0 2016-10-25 08:10 /apps/hive/warehouse/foodmart.db
+drwxrwxrwx   - hive hdfs          0 2016-10-25 08:11 /apps/hive/warehouse/sample_07
+drwxrwxrwx   - hive hdfs          0 2016-10-25 08:11 /apps/hive/warehouse/sample_08
+drwxrwxrwx   - hive hdfs          0 2019-10-16 01:09 /apps/hive/warehouse/temp_drivers
+drwxrwxrwx   - hive hdfs          0 2019-10-16 01:37 /apps/hive/warehouse/temp_timesheet
+drwxrwxrwx   - hive hdfs          0 2019-10-16 01:46 /apps/hive/warehouse/timesheet
+drwxrwxrwx   - root hdfs          0 2019-12-30 05:21 /apps/hive/warehouse/twitter.db
+drwxrwxrwx   - hive hdfs          0 2016-10-25 08:02 /apps/hive/warehouse/xademo.db
+```
+and further
+```shell
+hive (twitter)> dfs -ls /apps/hive/warehouse/twitter.db;
+Found 5 items
+drwxrwxrwx   - root hdfs          0 2019-12-21 04:08 /apps/hive/warehouse/twitter.db/day_of_week
+drwxrwxrwx   - root hdfs          0 2019-12-21 03:46 /apps/hive/warehouse/twitter.db/full_text
+drwxrwxrwx   - root hdfs          0 2019-12-21 03:57 /apps/hive/warehouse/twitter.db/full_text_2
+drwxrwxrwx   - root hdfs          0 2019-12-30 05:21 /apps/hive/warehouse/twitter.db/test
+drwxrwxrwx   - root hdfs          0 2019-12-21 04:13 /apps/hive/warehouse/twitter.db/weekend_tweets
+```
 ## Moving file to hdfs
 ```shell
 hadoop fs -put /path/to/twitter_data/full_text.txt /path/to/hdfs/dir
@@ -91,6 +118,13 @@ tweet                   string
 Detailed Table Information      Table(tableName:test, dbName:twitter, owner:root, createTime:1577683317, lastAccessTime:0, retention:0, sd:StorageDescriptor(cols:[FieldSchema(name:id, type:string, comment:null), FieldSchema(name:ts, type:string, comment:null), FieldSchema(name:lat_lon, type:string, comment:null), FieldSchema(name:lat, type:string, comment:null), FieldSchema(name:lon, type:string, comment:null), FieldSchema(name:tweet, type:string, comment:null)], location:hdfs://sandbox.hortonworks.com:8020/apps/hive/warehouse/twitter.db/test, inputFormat:org.apache.hadoop.mapred.TextInputFormat, outputFormat:org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat, compressed:false, numBuckets:-1, serdeInfo:SerDeInfo(name:null, serializationLib:org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, parameters:{serialization.format=     , field.delim=
 Time taken: 0.795 seconds, Fetched: 8 row(s)
 ```
+
+### Loading hdfs file in hive Table
+```shell
+load data inpath '/user/lab/full_text.txt'  
+overwrite into table twitter.full_text;
+```
+
 ### Loading hdfs file as Externel hive Table
 ```shell
 drop table twitter.full_text;
@@ -114,7 +148,18 @@ create table twitter.full_text_ts as
 select id, cast(concat(substr(ts,1,10), ' ', substr(ts,12,8)) as timestamp) as ts, lat, lon, tweet
 from twitter.full_text;
 
-
+## HIVE QL
+### SELECT
+```
+hive (twitter)> select id, ts from twitter.full_text limit 5;
+OK
+USER_79321756   2010-03-03T04:15:26     ÜT: 47.528139,-122.197916       47.528139       -122.197916     RT @USER_2ff4faca: IF SHE DO IT 1 MORE TIME......IMA KNOCK HER DAMN KOOFIE OFF.....ON MY MOMMA&gt;&gt;haha. #cutthatout NULL
+USER_79321756   2010-03-03T04:55:32     ÜT: 47.528139,-122.197916       47.528139       -122.197916     @USER_77a4822d @USER_2ff4faca okay:) lol. Saying ok to both of yall about to different things!:*        NULL
+USER_79321756   2010-03-03T05:13:34     ÜT: 47.528139,-122.197916       47.528139       -122.197916     RT @USER_5d4d777a: YOURE A FOR GETTING IN THE MIDDLE OF THIS @USER_ab059bdc WHO THE FUCK ARE YOU ? A FUCKING NOBODY !!!!&gt;&gt;Lol! Dayum! Aye! NULL
+USER_79321756   2010-03-03T05:28:02     ÜT: 47.528139,-122.197916       47.528139       -122.197916     @USER_77a4822d yea ok..well answer that cheap as Sweden phone you came up on when I call.       NULL
+USER_79321756   2010-03-03T05:56:13     ÜT: 47.528139,-122.197916       47.528139       -122.197916     A sprite can disappear in her mouth - lil kim hmmmmm the can not the bottle right?      NULL
+Time taken: 0.254 seconds, Fetched: 5 row(s)
+```
 -----------------------------------------------
 --- Complext Data Types -- Map/Array/Struct 
 -----------------------------------------------
