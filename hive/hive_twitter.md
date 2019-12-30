@@ -1,4 +1,5 @@
 # Apache Hive 
+[HIVE Language Manual](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+UDF)
 Topics
 - Hive
 - Complex data type
@@ -92,7 +93,7 @@ drwxrwxrwx   - root hdfs          0 2019-12-21 04:13 /apps/hive/warehouse/twitte
 ```shell
 hadoop fs -put /path/to/twitter_data/full_text.txt /path/to/hdfs/dir
 ```
-### hive Table Creation
+## hive Table Creation
 ```shell
 create table twitter.test (                                                   
           id string, 
@@ -139,7 +140,11 @@ row format delimited
 fields terminated by '\t'
 location '/user/twitter/full_text';   
 ```
-
+### Creating Table from Existing
+```shell
+create table twitter.full_text_2 as 
+select * from twitter.full_text;
+```
 -- convert timestamp
 
 drop table twitter.full_text_ts;
