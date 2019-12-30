@@ -9,13 +9,36 @@ Topics
 - Sqoop
 - moving data between relational database (mysql) and hive
 ## Hive CLI
+- All commmands should end with semi-colon ;
 ### Invoke
+If installed and configured properly, hive command will launch the hive CLI
+
 ```shell
+[root@sandbox lab]# hive
 hive
+>
+> Logging initialized using configuration in file:/etc/hive/2.5.0.0-1245/0/hive-log4j.properties
+hive >
 ```
-### Quite
+### Quit
 ```shell
-quite;
+quit;
+```
+### List Databases
+```shell
+hive> show databases;
+OK
+default
+demo
+foodmart
+twitter
+xademo
+Time taken: 0.046 seconds, Fetched: 5 row(s)
+```
+### Connect to a Database
+By default, default database is in use.
+```shell
+use twitter;
 ```
 ### Current Database in Use
 ```shell
@@ -28,34 +51,48 @@ or hive-site.xml
 <value>true</value>
 </property>
 ```
-
-## Dataset
+### List Tables in currently in use Database
+```
+hive (twitter)> show tables;
+OK
+day_of_week
+full_text
+full_text_2
+weekend_tweets
+Time taken: 0.509 seconds, Fetched: 4 row(s)
+```
+## Moving file to hdfs
 ```shell
 hadoop fs -put /path/to/twitter_data/full_text.txt /path/to/hdfs/dir
 ```
-To avoid confusion, please always include database name 'twitter.' as part of your hive table name. If you 
-don't specify the database name while you're not in the twitter database (use twitter), you will not find the
-the corresponding table. By default you're in a database called "default" 
-e.g.,  twitter.full_text
-
+### hive Table Creation
 ```shell
-hive> show databases;
-OK
-default
-demo
-foodmart
-twitter
-xademo
-Time taken: 0.046 seconds, Fetched: 5 row(s)
+create table twitter.test (                                                   
+          id string, 
+          ts string, 
+          lat_lon string,
+          lat string, 
+          lon string, 
+          tweet string)
+row format delimited 
+fields terminated by '\t' ; 
 ```
---------------------------------------------------------------------
--- load geo-tagged tweets as external hive table
+### Table Schema Description
+```shell
+hive (twitter)> describe extended test;
+OK
+id                      string
+ts                      string
+lat_lon                 string
+lat                     string
+lon                     string
+tweet                   string
 
--- Note: you can skip this if you already have 
--- twitter.full_text_ts table created from previous lab
---------------------------------------------------------------------
-
--- create and load tweet data as external table
+Detailed Table Information      Table(tableName:test, dbName:twitter, owner:root, createTime:1577683317, lastAccessTime:0, retention:0, sd:StorageDescriptor(cols:[FieldSchema(name:id, type:string, comment:null), FieldSchema(name:ts, type:string, comment:null), FieldSchema(name:lat_lon, type:string, comment:null), FieldSchema(name:lat, type:string, comment:null), FieldSchema(name:lon, type:string, comment:null), FieldSchema(name:tweet, type:string, comment:null)], location:hdfs://sandbox.hortonworks.com:8020/apps/hive/warehouse/twitter.db/test, inputFormat:org.apache.hadoop.mapred.TextInputFormat, outputFormat:org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat, compressed:false, numBuckets:-1, serdeInfo:SerDeInfo(name:null, serializationLib:org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, parameters:{serialization.format=     , field.delim=
+Time taken: 0.795 seconds, Fetched: 8 row(s)
+```
+### Loading hdfs file as Externel hive Table
+```shell
 drop table twitter.full_text;
 create external table twitter.full_text (                                                   
           id string, 
@@ -66,8 +103,8 @@ create external table twitter.full_text (
           tweet string)
 row format delimited 
 fields terminated by '\t'
-location '/user/twitter/full_text' ;     
--- note: you may have your data in a different hadoop directory and that's fine!
+location '/user/twitter/full_text';   
+```
 
 -- convert timestamp
 
