@@ -1,14 +1,17 @@
 # Apache Hive 
-[HIVE Language Manual](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+UDF)
+[HIVE Language Manual](https://cwiki.apache.org/confluence/display/Hive/LanguageManual)
+
 Topics
-- Hive
-- Complex data type
-- collection functions
-- advanced string functions
+- Hive CLI
+ - Complex data type
+- Functions
+- Collection functions
+- Advanced string functions
 - UDAF
 - UDTF
 - Sqoop
 - moving data between relational database (mysql) and hive
+
 ## Hive CLI
 - All commmands should end with semi-colon ;
 ### Invoke
@@ -165,9 +168,37 @@ USER_79321756   2010-03-03T05:28:02     ÜT: 47.528139,-122.197916       47.5281
 USER_79321756   2010-03-03T05:56:13     ÜT: 47.528139,-122.197916       47.528139       -122.197916     A sprite can disappear in her mouth - lil kim hmmmmm the can not the bottle right?      NULL
 Time taken: 0.254 seconds, Fetched: 5 row(s)
 ```
------------------------------------------------
---- Complext Data Types -- Map/Array/Struct 
------------------------------------------------
+## Functions
+
+- DATE(); Convert string datatype to timestamp
+- cast() function; convert datatype string to timestamp 
+- concat() function; concatanate multiple strings into one
+- substr() function; extract some portion of a string
+```shell
+hive (twitter)> create table twitter.full_text_ts as select id, cast(concat(substr(ts, 1, 10), ' ', substr(ts, 12, 18)) as timestamp) as ts, lat, lon, tweet from twitter.full_text;
+Query ID = root_20191230055154_4654cec8-a215-4181-b1b3-dd00cd67df31
+Total jobs = 1
+Launching Job 1 out of 1
+Tez session was closed. Reopening...
+Session re-established.
+
+
+Status: Running (Executing on YARN cluster with App id application_1576992085977_0004)
+
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      4          4        0        0       0       0
+--------------------------------------------------------------------------------
+VERTICES: 01/01  [==========================>>] 100%  ELAPSED TIME: 112.08 s
+--------------------------------------------------------------------------------
+Moving data to directory hdfs://sandbox.hortonworks.com:8020/apps/hive/warehouse/twitter.db/full_text_ts
+Table twitter.full_text_ts stats: [numFiles=4, numRows=377616, totalSize=61667310, rawDataSize=61289694]
+OK
+Time taken: 139.769 seconds
+```
+
+## Complext Data Types -- Map/Array/Struct 
 
 -- Creating table and load data with complex types
 -- NOTE: because the twitter data is not in a proper format,
