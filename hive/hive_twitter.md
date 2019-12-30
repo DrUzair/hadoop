@@ -1,4 +1,4 @@
-# Programming Hive 2 - Lab Exercises
+# Apache Hive 2 
 
 Topics
 - Hive
@@ -9,6 +9,18 @@ Topics
 - UDTF
 - Sqoop
 - moving data between relational database (mysql) and hive
+## Hive CLI
+### Current Database in Use
+```shell
+set hive.cli.print.current.db=true;
+```
+or hive-site.xml
+```xml
+<property>
+<name>hive.cli.print.current.db</name>
+<value>true</value>
+</property>
+```
 
 ## Dataset
 ```shell
