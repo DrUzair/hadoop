@@ -9,12 +9,12 @@
  - List, Location, Creation, Drop
 - [Hive QL](#hql)
  - SELECT Clause
- - [Functions; Dates and Regex](#funcs)
-- Advanced string functions
-- UDAF
-- UDTF
-- Sqoop
-- moving data between relational database (mysql) and hive
+  - [Time and Dates](#dt_funcs) 
+  - [Stings and Regex](#str_funcs)
+ - [Conditionals; Case-When-Then](#cnds)
+ - [WHERE Clause](#where)
+ - [ORDER By Clause](#oder)
+ 
 
 ## Hive CLI <a name="cli"></a> 
 - All commmands should end with semi-colon ;
@@ -60,6 +60,7 @@ or hive-site.xml
 <value>true</value>
 </property>
 ```
+[Top](#top)
 ### List Tables in currently in use Database <a name="tbl"></a> 
 ```
 hive (twitter)> show tables;
@@ -158,7 +159,7 @@ select * from twitter.full_text;
 ```sql
 drop table twitter.full_text_ts;
 ```
-
+[Top](#top)
 
 ## HIVE QL <a name="hql"></a> 
 ### SELECT Clause
@@ -172,8 +173,9 @@ USER_79321756   2010-03-03T05:28:02     ÜT: 47.528139,-122.197916       47.5281
 USER_79321756   2010-03-03T05:56:13     ÜT: 47.528139,-122.197916       47.528139       -122.197916     A sprite can disappear in her mouth - lil kim hmmmmm the can not the bottle right?      NULL
 Time taken: 0.254 seconds, Fetched: 5 row(s)
 ```
-## Functions <a name="funcs"></a>
-### Time and Date
+[Top](#top)
+## Functions 
+### Time and Date <a name="dt_funcs"></a>
 Example: Convert string to timestamp
 - cast() function; convert datatype string to timestamp 
 - concat() function; concatanate multiple strings into one
@@ -224,7 +226,8 @@ select ts, unix_timestamp(ts) as unix_timestamp, to_date(ts) as the_date, year(t
 from twitter.full_text_ts
 limit 5;
 ```
-### Strings and Regex
+[Top](#top)
+### Strings and Regex <a name="str_funcs"></a> 
 - Trim spaces from both ends of a string and convert to lowercase
 ```sql
 select id, ts, trim(lower(tweet)) as tweet
@@ -263,9 +266,8 @@ Longest tweets..
 ```sql
 select id, regexp_replace(tweet, "@USER_\\w{8}", "") as trimmed_tweet, length(regexp_replace(tweet, "@USER_\\w{8}", " ")) as len from twitter.full_text_ts
 ```
-
-### Conditionals: Case-When-Then
-
+[Top](#top)
+### Conditionals: Case-When-Then <a name="cnds"></a> 
 - Find users who like to tw-eating
 ```sql
 select * from
@@ -278,7 +280,8 @@ select * from
 where t.tw_eating in ('breakfast','lunch','dinner')
 limit 10;
 ```
-## WHERE Clause - Filtering Data
+[Top](#top)
+## WHERE Clause - Filtering Data <a name="where"></a> 
 - Find all tweets by a user
 - Hive is very slow for this type of query because for even one record it still scans through the entire table
 - this is because MapReduce works in a streaming fashion
@@ -347,7 +350,8 @@ VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 181.43 s
 Moving data to directory hdfs://sandbox.hortonworks.com:8020/apps/hive/warehouse/twitter.db/tweets_per_user
 Table twitter.tweets_per_user stats: [numFiles=1, numRows=9475, totalSize=161391, rawDataSize=151916]
 ```
-## ORDER BY Clause
+[Top](#top)
+## ORDER BY Clause <a name="oderby"></a> 
 ```sql
 select * from tweets_per_user order by cnt desc limit 10;
 ```
