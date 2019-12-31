@@ -200,6 +200,55 @@ drop table twitter.full_text_ts;
 
 ## HIVE QL <a name="hql"></a> 
 ### SELECT Clause <a name="select"></a> 
+- display the first 10 rows of the customer_detail table
+```sql
+SELECT * FROM xademo.customer_details LIMIT 10;
+```
+outputs ...
+
+```shell
+OK
+PHONE_NUM       PLAN    REC_DATE        STAUS   BALANCE IMEI    REGION
+5553947406      6290    20130328        31      0       012565003040464 R06
+7622112093      2316    20120625        21      28      359896046017644 R02
+5092111043      6389    20120610        21      293     012974008373781 R06
+9392254909      4002    20110611        21      178     357004045763373 R04
+7783343634      2276    20121214        31      0       354643051707734 R02
+5534292073      6389    20120223        31      83      359896040168211 R06
+9227087403      4096    20081010        31      35      356927012514661 R04
+9226203167      4060    20060527        21      450     010589003666377 R04
+9221154050      4107    20100811        31      3       358665019197977 R04
+Time taken: 0.313 seconds, Fetched: 10 row(s)
+```
+
+- count the number of rows in the table
+```sql
+SELECT count(*) 
+FROM xademo.customer_details;
+```
+```shell
+Query ID = root_20191230190726_d1438312-f127-4ffe-ab28-f8aef86dc25c
+Total jobs = 1
+Launching Job 1 out of 1
+Tez session was closed. Reopening...
+Session re-established.
+
+
+Status: Running (Executing on YARN cluster with App id application_1576992085977_0011)
+
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 12.77 s
+--------------------------------------------------------------------------------
+OK
+30
+Time taken: 35.485 seconds, Fetched: 1 row(s)
+```
+
 ```sql
 hive (twitter)> select id, ts from twitter.full_text limit 5;
 OK
@@ -210,6 +259,16 @@ USER_79321756   2010-03-03T05:28:02     ÜT: 47.528139,-122.197916       47.5281
 USER_79321756   2010-03-03T05:56:13     ÜT: 47.528139,-122.197916       47.528139       -122.197916     A sprite can disappear in her mouth - lil kim hmmmmm the can not the bottle right?      NULL
 Time taken: 0.254 seconds, Fetched: 5 row(s)
 ```
+
+SELECT * FROM xademo.customer_details;
+
+-- display the first 10 rows of the customer_detail table
+SELECT * FROM xademo.customer_details LIMIT 10;
+
+-- count the number of rows in the table
+SELECT count(*) 
+FROM xademo.customer_details;
+
 [Top](#top)
 ## Functions 
 ### Time and Date <a name="dt_funcs"></a>
