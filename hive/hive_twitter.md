@@ -145,20 +145,18 @@ fields terminated by '\t'
 location '/user/twitter/full_text';   
 ```
 ### Creating Table from Existing
-```shell
+```sql
 create table twitter.full_text_2 as 
 select * from twitter.full_text;
 ```
--- convert timestamp
-
+### Dropping a Table
+```sql
 drop table twitter.full_text_ts;
+```
 
-create table twitter.full_text_ts as
-select id, cast(concat(substr(ts,1,10), ' ', substr(ts,12,8)) as timestamp) as ts, lat, lon, tweet
-from twitter.full_text;
 
 ## HIVE QL
-### SELECT
+### SELECT Clause
 ```
 hive (twitter)> select id, ts from twitter.full_text limit 5;
 OK
@@ -280,6 +278,38 @@ select * from
 where t.tw_eating in ('breakfast','lunch','dinner')
 limit 10;
 ```
+## WHERE Clause - Filtering Data
+- Find all tweets by a user
+- Hive is very slow for this type of query because for even one record it still scans through the entire table
+- this is because MapReduce works in a streaming fashion
+- for fast retrieval, you can either use relational database or different technologies such as Apache Impala or Spark 
+```sql
+select id, ts, lat, lon, tweet
+from twitter.full_text_ts   
+where id='USER_ae406f1d'; 
+```
+
+- Show a sample, then calculate number of tweets on a specific date
+```sql
+select *
+from twitter.full_text_ts
+where to_date(ts) = '2010-03-07'
+limit 5; 
+```
+select count(*)
+from twitter.full_text_ts
+where to_date(ts) = '2010-03-07'
+
+-- Find all tweets tweeted from NYC vicinity (using bounding box -74.2589, 40.4774, -73.7004, 40.9176)
+-- The square bounding box won't give us very accurate results. We may end up retrieving tweets in New Jersey as well.
+-- A better approach is to use geo function plugins for Hive. We will re-visit this when we introduce Pig
+
+select distinct lat, lon 
+from twitter.full_text_ts
+where lat > 40.4774 and lat < 40.9176 and
+      lon > -74.2589 and lon < -73.7004
+limit 20;
+
 ## Complext Data Types -- Map/Array/Struct 
 
 -- Creating table and load data with complex types
