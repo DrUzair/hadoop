@@ -169,12 +169,20 @@ USER_79321756   2010-03-03T05:56:13     ÜT: 47.528139,-122.197916       47.5281
 Time taken: 0.254 seconds, Fetched: 5 row(s)
 ```
 ## Functions
-
-- DATE(); Convert string datatype to timestamp
+Example: Convert string to timestamp
 - cast() function; convert datatype string to timestamp 
 - concat() function; concatanate multiple strings into one
 - substr() function; extract some portion of a string
 ```shell
+hive (twitter)> describe full_text;
+OK
+id                      string
+ts                      string
+lat_lon                 string
+lat                     string
+lon                     string
+tweet                   string
+Time taken: 0.64 seconds, Fetched: 6 row(s)
 hive (twitter)> create table twitter.full_text_ts as select id, cast(concat(substr(ts, 1, 10), ' ', substr(ts, 12, 18)) as timestamp) as ts, lat, lon, tweet from twitter.full_text;
 Query ID = root_20191230055154_4654cec8-a215-4181-b1b3-dd00cd67df31
 Total jobs = 1
@@ -196,6 +204,25 @@ Moving data to directory hdfs://sandbox.hortonworks.com:8020/apps/hive/warehouse
 Table twitter.full_text_ts stats: [numFiles=4, numRows=377616, totalSize=61667310, rawDataSize=61289694]
 OK
 Time taken: 139.769 seconds
+hive (twitter)> describe full_text_ts;
+OK
+id                      string
+ts                      timestamp
+lat                     string
+lon                     string
+tweet                   string
+Time taken: 0.67 seconds, Fetched: 5 row(s)
+```
+Extract year, month and day from timestamp
+- unix_timestamp() function; convert datatype string to unix timestamp
+- to_date() function; convert datatype string to date
+- year() function; extract the year portion of a date
+- month() function; extract the month portion of a date
+- day() function; extract the day portion of a date
+```shell
+select ts, unix_timestamp(ts) as unix_timestamp, to_date(ts) as date, year(ts) as year, month(ts) as month, day(ts) as day
+from twitter.full_text_ts
+limit 5;
 ```
 
 ## Complext Data Types -- Map/Array/Struct 
