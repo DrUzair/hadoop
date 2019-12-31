@@ -8,12 +8,15 @@
 - [Hive Tables](#tbl)
  - List, Location, Creation, Drop
 - [Hive QL](#hql)
- - SELECT Clause
+ - [SELECT Clause](#select)
   - [Time and Dates](#dt_funcs) 
   - [Stings and Regex](#str_funcs)
  - [Conditionals; Case-When-Then](#cnds)
  - [WHERE Clause](#where)
+ - [GROUP By Clause](#groupby)
  - [ORDER By Clause](#oder)
+ - [DISTINCT](#distinct)
+ - [JOIN Tables](#join)
  
 
 ## Hive CLI <a name="cli"></a> 
@@ -162,7 +165,7 @@ drop table twitter.full_text_ts;
 [Top](#top)
 
 ## HIVE QL <a name="hql"></a> 
-### SELECT Clause
+### SELECT Clause <a name="select"></a> 
 ```sql
 hive (twitter)> select id, ts from twitter.full_text limit 5;
 OK
@@ -317,7 +320,9 @@ where lat > 40.4774 and lat < 40.9176 and
       lon > -74.2589 and lon < -73.7004
 limit 20;
 ```
-## GROUP BY Clause
+[Top](#top)
+
+## GROUP BY Clause <a name="groupby"></a> 
 
 - Aggregation Functions
 - Calculate number of tweets per user
@@ -396,8 +401,8 @@ group by id
 order by cnt desc
 limit 10;
 ```
-
-## DISTINCT 
+[Top](#top)
+## DISTINCT <a name="groupby"></a> 
 - Find number of distinct days this dataset covers
 ```sql
 select distinct to_date(ts)
@@ -442,8 +447,8 @@ from twitter.full_text_ts;
 select count(distinct to_date(ts))
 from twitter.full_text_ts;
 ```
-
-## JOIN Tables
+[Top](#top)
+## JOIN Tables <a name="join"></a> 
 - prepare lookup table 'dayofweek'
 --------------------
 2010-03-02	| Tuesday |
@@ -467,8 +472,10 @@ overwrite into table twitter.dayofweek;
 
 -- Find Weekend Tweets
 -- INNER JOIN
-
+```sql
 create table twitter.weekend_tweets as
 select a.id, a.ts, b.dayofweek, a.lat, a.lon, a.tweet
 from twitter.full_text_ts as JOIN twitter.dayofweek as b
      ON to_date(a.ts) = b.date AND b.dayofweek IN ('Saturday','Sunday');
+```
+[Top](#top)
