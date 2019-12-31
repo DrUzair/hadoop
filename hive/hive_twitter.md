@@ -377,3 +377,89 @@ USER_e6d61f05   220
 Time taken: 17.02 seconds, Fetched: 10 row(s)
 
 ```
+- Find top 10 tweeters in NYC
+```sql
+select id, count(*) as cnt
+from twitter.full_text_ts
+where lat > 40.4774 and lat < 40.9176 and
+      lon > -74.2589 and lon < -73.7004
+group by id
+order by cnt desc
+limit 10;
+```
+
+## DISTINCT 
+- Find number of distinct days this dataset covers
+```sql
+select distinct to_date(ts)
+```
+Console output
+
+```shell
+    > from twitter.full_text_ts;
+Query ID = root_20191230152033_18f7b2dd-25fe-43c9-8a6e-da2c6ae9864e
+Total jobs = 1
+Launching Job 1 out of 1
+
+
+Status: Running (Executing on YARN cluster with App id application_1576992085977_0010)
+
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      4          4        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 44.52 s
+--------------------------------------------------------------------------------
+OK
+2010-03-02
+2010-03-03
+2010-03-04
+2010-03-05
+2010-03-06
+2010-03-07
+Time taken: 46.339 seconds, Fetched: 6 row(s)
+```
+
+- Count number of distinct days this dataset covers
+```sql
+select distinct to_date(ts)
+from twitter.full_text_ts;
+```
+
+- Find number of distinct days this dataset covers
+```sql
+select count(distinct to_date(ts))
+from twitter.full_text_ts;
+```
+
+## JOIN Tables
+- prepare lookup table 'dayofweek'
+--------------------
+2010-03-02	| Tuesday |
+2010-03-03	| Wednesday |
+2010-03-04	| Thursday |
+2010-03-05	| Friday   |
+2010-03-06	| Saturday |
+2010-03-07	| Sunday   |
+----------------------
+
+```sql
+create table twitter.dayofweek (t_date string, dayofweek string)
+row format delimited
+fields terminated by '\t';
+```
+```shell
+load data inpath '/user/lab/dayofweek.txt'
+overwrite into table twitter.dayofweek;
+```
+
+
+-- Find Weekend Tweets
+-- INNER JOIN
+
+create table twitter.weekend_tweets as
+select a.id, a.ts, b.dayofweek, a.lat, a.lon, a.tweet
+from twitter.full_text_ts as JOIN twitter.dayofweek as b
+     ON to_date(a.ts) = b.date AND b.dayofweek IN ('Saturday','Sunday');
