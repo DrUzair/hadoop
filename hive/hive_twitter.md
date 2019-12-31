@@ -1,18 +1,22 @@
 # Apache Hive 
 [HIVE Language Manual](https://cwiki.apache.org/confluence/display/Hive/LanguageManual)
 
-Topics
-- Hive CLI
- - Complex data type
-- Functions
-- Collection functions
+## Topics <a name="top"></a> 
+- [Hive CLI](#cli)
+- [Hive Database files](#db)
+ - List, Connect, Location, Creation, Drop
+- [Hive Tables](#tbl)
+ - List, Location, Creation, Drop
+- [Hive QL](#hql)
+ - SELECT Clause
+ - [Functions; Dates and Regex](#funcs)
 - Advanced string functions
 - UDAF
 - UDTF
 - Sqoop
 - moving data between relational database (mysql) and hive
 
-## Hive CLI
+## Hive CLI <a name="cli"></a> 
 - All commmands should end with semi-colon ;
 ### Invoke
 If installed and configured properly, hive command will launch the hive CLI
@@ -29,7 +33,7 @@ Ctrl-c or
 ```shell
 quit;
 ```
-### List Databases
+### List Databases <a name="db"></a> 
 ```shell
 hive> show databases;
 OK
@@ -56,7 +60,7 @@ or hive-site.xml
 <value>true</value>
 </property>
 ```
-### List Tables in currently in use Database
+### List Tables in currently in use Database <a name="tbl"></a> 
 ```
 hive (twitter)> show tables;
 OK
@@ -97,6 +101,7 @@ drwxrwxrwx   - root hdfs          0 2019-12-21 04:13 /apps/hive/warehouse/twitte
 ```shell
 hadoop fs -put /path/to/twitter_data/full_text.txt /path/to/hdfs/dir
 ```
+
 ## hive Table Creation
 ```shell
 create table twitter.test (                                                   
@@ -155,7 +160,7 @@ drop table twitter.full_text_ts;
 ```
 
 
-## HIVE QL
+## HIVE QL <a name="hql"></a> 
 ### SELECT Clause
 ```sql
 hive (twitter)> select id, ts from twitter.full_text limit 5;
@@ -167,7 +172,7 @@ USER_79321756   2010-03-03T05:28:02     ÜT: 47.528139,-122.197916       47.5281
 USER_79321756   2010-03-03T05:56:13     ÜT: 47.528139,-122.197916       47.528139       -122.197916     A sprite can disappear in her mouth - lil kim hmmmmm the can not the bottle right?      NULL
 Time taken: 0.254 seconds, Fetched: 5 row(s)
 ```
-## Functions
+## Functions <a name="funcs"></a>
 ### Time and Date
 Example: Convert string to timestamp
 - cast() function; convert datatype string to timestamp 
