@@ -131,7 +131,7 @@ overwrite into table twitter.full_text;
 ```
 
 ### Loading hdfs file as Externel hive Table
-```shell
+```sql
 drop table twitter.full_text;
 create external table twitter.full_text (                                                   
           id string, 
@@ -157,7 +157,7 @@ drop table twitter.full_text_ts;
 
 ## HIVE QL
 ### SELECT Clause
-```
+```sql
 hive (twitter)> select id, ts from twitter.full_text limit 5;
 OK
 USER_79321756   2010-03-03T04:15:26     ÜT: 47.528139,-122.197916       47.528139       -122.197916     RT @USER_2ff4faca: IF SHE DO IT 1 MORE TIME......IMA KNOCK HER DAMN KOOFIE OFF.....ON MY MOMMA&gt;&gt;haha. #cutthatout NULL
@@ -219,32 +219,32 @@ Extract year, month and day from timestamp
 - year() function; extract the year portion of a date
 - month() function; extract the month portion of a date
 - day() function; extract the day portion of a date
-```shell
+```sql
 select ts, unix_timestamp(ts) as unix_timestamp, to_date(ts) as the_date, year(ts) as year, month(ts) as month, day(ts) as day
 from twitter.full_text_ts
 limit 5;
 ```
 ### Strings and Regex
 - Trim spaces from both ends of a string and convert to lowercase
-```shell
+```sql
 select id, ts, trim(lower(tweet)) as tweet
 from twitter.full_text_ts
 limit 5;
 ```
 - Trim spaces from both ends of a string and convert to uppercase
-```shell
+```sql
 select id, ts, trim(upper(tweet)) as tweet
 from twitter.full_text_ts
 limit 5;
 ```
 - length of a string
-```shell
+```sql
 select id, ts, length(tweet) as tweet
 from twitter.full_text_ts
 limit 5;
 ```
 - Tokenize a string into words
-```shell
+```sql
 select id, ts, sentences(tweet) as tokens
 from twitter.full_text_ts
 limit 5;
@@ -252,7 +252,7 @@ limit 5;
 - Regex_extract: twitter handles
 Find twitter handles mentioned in a tweet, NOTE that the regex in this query will only find the first mention. It doesn't work properly when the tweet contains more than one mention. 
 
-```shell
+```sql
 select id, ts, regexp_extract(lower(tweet), '(.*)@user_(\\S{8})([:| ])(.*)',2) as patterns
 from twitter.full_text_ts
 limit 5;
@@ -260,14 +260,14 @@ limit 5;
 How do we capture all the mentions in a tweet? 
 - Regex_replace
 Longest tweets..
-```
+```sql
 select id, regexp_replace(tweet, "@USER_\\w{8}", "") as trimmed_tweet, length(regexp_replace(tweet, "@USER_\\w{8}", " ")) as len from twitter.full_text_ts
 ```
 
 ### Conditionals: Case-When-Then
 
-Find users who like to tw-eating
-```
+- Find users who like to tw-eating
+```sql
 select * from
     (select id, ts, case when hour(ts) = 7 then 'breakfast'
                         when hour(ts) = 12 then 'lunch'
@@ -296,19 +296,24 @@ from twitter.full_text_ts
 where to_date(ts) = '2010-03-07'
 limit 5; 
 ```
+- Count tweets on a given date...
+```sql
 select count(*)
 from twitter.full_text_ts
 where to_date(ts) = '2010-03-07'
+```
 
--- Find all tweets tweeted from NYC vicinity (using bounding box -74.2589, 40.4774, -73.7004, 40.9176)
--- The square bounding box won't give us very accurate results. We may end up retrieving tweets in New Jersey as well.
--- A better approach is to use geo function plugins for Hive. We will re-visit this when we introduce Pig
+- Find all tweets tweeted from NYC vicinity (using bounding box -74.2589, 40.4774, -73.7004, 40.9176)
+- The square bounding box won't give us very accurate results. We may end up retrieving tweets in New Jersey as well.
+- A better approach is to use geo function plugins for Hive. We will re-visit this when we introduce Pig
 
+```sql
 select distinct lat, lon 
 from twitter.full_text_ts
 where lat > 40.4774 and lat < 40.9176 and
       lon > -74.2589 and lon < -73.7004
 limit 20;
+```
 
 ## Complext Data Types -- Map/Array/Struct 
 
