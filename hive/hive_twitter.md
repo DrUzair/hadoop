@@ -4,24 +4,26 @@
 ## Topics <a name="top"></a> 
 - [Hive CLI](#cli)
 - [Hive Database files](#db)
- - List, Connect, Location, Creation, Drop
+
+  - List, Connect, Location, Creation, Drop
+  
 - [Hive Tables](#tbl)
  
- - List, Location, Creation, Drop
+  - List, Location, Creation, Drop
 
 - [Hive QL](#hql)
  
- - [SELECT Clause](#select)
+  - [SELECT Clause](#select)
   
-  - [Time and Dates](#dt_funcs) 
-  - [Stings and Regex](#str_funcs)
+    - [Time and Dates](#dt_funcs) 
+    - [Stings and Regex](#str_funcs)
  
- - [Conditionals; Case-When-Then](#cnds)
- - [WHERE Clause](#where)
- - [GROUP By Clause](#groupby)
- - [ORDER By Clause](#oderby)
- - [DISTINCT](#distinct)
- - [JOIN Tables](#join)
+  - [Conditionals; Case-When-Then](#cnds)
+  - [WHERE Clause](#where)
+  - [GROUP By Clause](#groupby)
+  - [ORDER By Clause](#oderby)
+  - [DISTINCT](#distinct)
+  - [JOIN Tables](#join)
  
 
 ## Hive CLI <a name="cli"></a> 
