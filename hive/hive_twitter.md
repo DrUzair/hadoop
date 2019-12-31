@@ -266,7 +266,7 @@ Longest tweets..
 select id, regexp_replace(tweet, "@USER_\\w{8}", "") as trimmed_tweet, length(regexp_replace(tweet, "@USER_\\w{8}", " ")) as len from twitter.full_text_ts
 ```
 
-### Conditionals: Case-When
+### Conditionals: Case-When-Then
 
 Find users who like to tw-eating
 ```
