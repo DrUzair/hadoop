@@ -25,6 +25,7 @@ hive
 hive >
 ```
 ### Quit
+Ctrl-c or
 ```shell
 quit;
 ```
@@ -250,7 +251,7 @@ select id, ts, sentences(tweet) as tokens
 from twitter.full_text_ts
 limit 5;
 ```
-- Regex: twitter handles
+- Regex_extract: twitter handles
 Find twitter handles mentioned in a tweet, NOTE that the regex in this query will only find the first mention. It doesn't work properly when the tweet contains more than one mention. 
 
 ```shell
@@ -259,7 +260,26 @@ from twitter.full_text_ts
 limit 5;
 ```
 How do we capture all the mentions in a tweet? 
+- Regex_replace
+Longest tweets..
+```
+select id, regexp_replace(tweet, "@USER_\\w{8}", "") as trimmed_tweet, length(regexp_replace(tweet, "@USER_\\w{8}", " ")) as len from twitter.full_text_ts
+```
 
+### Conditionals: Case-When
+
+Find users who like to tw-eating
+```
+select * from
+    (select id, ts, case when hour(ts) = 7 then 'breakfast'
+                        when hour(ts) = 12 then 'lunch'
+                        when hour(ts) = 19 then 'dinner'
+                   end as tw_eating,
+           lat, lon
+    from twitter.full_text_ts) t
+where t.tw_eating in ('breakfast','lunch','dinner')
+limit 10;
+```
 ## Complext Data Types -- Map/Array/Struct 
 
 -- Creating table and load data with complex types
