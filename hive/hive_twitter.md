@@ -402,7 +402,7 @@ order by cnt desc
 limit 10;
 ```
 [Top](#top)
-## DISTINCT <a name="groupby"></a> 
+## DISTINCT <a name="distinct"></a> 
 - Find number of distinct days this dataset covers
 ```sql
 select distinct to_date(ts)
