@@ -87,6 +87,16 @@ Dropping a database that doesn't exit will result
 hive> drop database xyx;
 FAILED: SemanticException [Error 10072]: Database does not exist: xyx
 ```
+Drop a database that contains tables 
+```shell
+hive> drop database twitter;
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. InvalidOperationException(message:Database twitter is not empty. One or more tables exist.)
+```
+Use responsibly
+```shell
+DROP database IF EXISTS demo CASCADE;
+```
+
 [Top](#top)
 ### List Tables in currently in use Database <a name="tbl"></a> 
 ```
