@@ -169,6 +169,7 @@ USER_79321756   2010-03-03T05:56:13     ÜT: 47.528139,-122.197916       47.5281
 Time taken: 0.254 seconds, Fetched: 5 row(s)
 ```
 ## Functions
+### Time and Date
 Example: Convert string to timestamp
 - cast() function; convert datatype string to timestamp 
 - concat() function; concatanate multiple strings into one
@@ -220,11 +221,35 @@ Extract year, month and day from timestamp
 - month() function; extract the month portion of a date
 - day() function; extract the day portion of a date
 ```shell
-select ts, unix_timestamp(ts) as unix_timestamp, to_date(ts) as date, year(ts) as year, month(ts) as month, day(ts) as day
+select ts, unix_timestamp(ts) as unix_timestamp, to_date(ts) as the_date, year(ts) as year, month(ts) as month, day(ts) as day
 from twitter.full_text_ts
 limit 5;
 ```
-
+### Strings and Regex
+- Trim spaces from both ends of a string and convert to lowercase
+```shell
+select id, ts, trim(lower(tweet)) as tweet
+from twitter.full_text_ts
+limit 5;
+```
+- Trim spaces from both ends of a string and convert to uppercase
+```shell
+select id, ts, trim(upper(tweet)) as tweet
+from twitter.full_text_ts
+limit 5;
+```
+- length of a string
+```shell
+select id, ts, length(tweet) as tweet
+from twitter.full_text_ts
+limit 5;
+```
+- Tokenize a string into words
+```shell
+select id, ts, sentences(tweet) as tokens
+from twitter.full_text_ts
+limit 5;
+```
 ## Complext Data Types -- Map/Array/Struct 
 
 -- Creating table and load data with complex types
