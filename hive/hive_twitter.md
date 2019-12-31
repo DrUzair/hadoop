@@ -250,6 +250,16 @@ select id, ts, sentences(tweet) as tokens
 from twitter.full_text_ts
 limit 5;
 ```
+- Regex: twitter handles
+Find twitter handles mentioned in a tweet, NOTE that the regex in this query will only find the first mention. It doesn't work properly when the tweet contains more than one mention. 
+
+```shell
+select id, ts, regexp_extract(lower(tweet), '(.*)@user_(\\S{8})([:| ])(.*)',2) as patterns
+from twitter.full_text_ts
+limit 5;
+```
+How do we capture all the mentions in a tweet? 
+
 ## Complext Data Types -- Map/Array/Struct 
 
 -- Creating table and load data with complex types
