@@ -55,20 +55,37 @@ xademo
 Time taken: 0.046 seconds, Fetched: 5 row(s)
 ```
 ### Connect to a Database
-By default, default database is in use.
+By default, default database is in use. 
 ```shell
 use twitter;
 ```
-### Current Database in Use
+All queries will run on the databse in use.
+
+**Note** to make currently in use databse to appear on console; 
+
 ```shell
 set hive.cli.print.current.db=true;
 ```
 or hive-site.xml
 ```xml
 <property>
-<name>hive.cli.print.current.db</name>
-<value>true</value>
+  <name>hive.cli.print.current.db</name>
+  <value>true</value>
 </property>
+```
+### Create a Database file
+```sql
+CREATE database demo;
+```
+
+### Drop a Database file
+```sql
+DROP database IF EXISTS demo;
+```
+Dropping a database that doesn't exit will result
+```shell
+hive> drop database xyx;
+FAILED: SemanticException [Error 10072]: Database does not exist: xyx
 ```
 [Top](#top)
 ### List Tables in currently in use Database <a name="tbl"></a> 
