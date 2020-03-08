@@ -2,7 +2,7 @@
 
 ## History
 - Versions
-![Versions](./Spark_Versions.PNG?raw=true)
+![Versions](./Spark_Versions.PNG)
 
 ## Cluster Management
 - Ambari
