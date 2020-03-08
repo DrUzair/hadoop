@@ -1,7 +1,8 @@
 # All about Apache Spark 
 
 ## History
-- [Versions](https://github.com/DrUzair/BDT/blob/master/spark/Spark_Versions.PNG?raw=true)
+- Versions
+![Versions](./Spark_Versions.PNG?raw=true)
 
 ## Cluster Management
 - Ambari
